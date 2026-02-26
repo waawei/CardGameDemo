@@ -1,0 +1,67 @@
+[gd_scene format=3 uid="uid://cvbwf8271cha0"]
+
+[ext_resource type="Texture2D" uid="uid://w2v4wxb8uykf" path="res://Assets/CardFaces/parchment_ribbon_banner.png" id="2_parchment"]
+[ext_resource type="FontFile" uid="uid://j7jp8qw8i3h8" path="res://Assets/Fonts/ZCOOLXiaoWei-Regular.ttf" id="2_title"]
+[ext_resource type="Script" uid="uid://c7jn7ap5d4kjb" path="res://Scripts/TurnPhaseBreath.gd" id="3_breath"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_turn_phase_clear"]
+bg_color = Color(0, 0, 0, 0)
+
+[node name="TurnPhaseLayer" type="CanvasLayer" unique_id=48913889]
+layer = 5
+offset = Vector2(20, -100)
+transform = Transform2D(1, 0, 0, 1, 20, -100)
+
+[node name="TurnPhasePanel" type="Panel" parent="." unique_id=1913752280]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -849.0
+offset_top = 879.0
+offset_right = -549.0
+offset_bottom = 959.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_turn_phase_clear")
+script = ExtResource("3_breath")
+
+[node name="TurnPhaseBg" type="TextureRect" parent="TurnPhasePanel" unique_id=1588659780]
+z_index = -1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -2.0
+offset_top = 4.0
+offset_right = -2.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_parchment")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="TurnPhaseVBox" type="VBoxContainer" parent="TurnPhasePanel" unique_id=848010916]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 108.0
+offset_top = 18.0
+offset_right = 88.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 2
+
+[node name="TurnOwnerLabel" type="Label" parent="TurnPhasePanel/TurnPhaseVBox" unique_id=1274981454]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.84, 0.2, 1)
+theme_override_fonts/font = ExtResource("2_title")
+text = "Player Turn"
+
+[node name="TurnPhaseLabel" type="Label" parent="TurnPhasePanel/TurnPhaseVBox" unique_id=1923078906]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.92, 0.7, 1)
+theme_override_fonts/font = ExtResource("2_title")
+text = "Main Phase"

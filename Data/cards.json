@@ -1,0 +1,430 @@
+{
+  "FaunAcolyte": {
+    "name": "牧神学徒",
+    "faction": "森灵",
+    "type": "Monster",
+    "cost": 2,
+    "attack": 1,
+    "health": 3,
+    "keywords": [],
+    "evolve_next_id": "Faun",
+    "evolve_cost": 2,
+    "ability_script": null,
+    "ability_text": "回合开始：可进化（进化2）"
+  },
+  "Faun": {
+    "name": "牧神",
+    "faction": "森灵",
+    "type": "Monster",
+    "cost": 3,
+    "attack": 3,
+    "health": 4,
+    "keywords": [],
+    "ability_script": "res://Scripts/Abilities/HealHero.gd",
+    "ability_params": {
+      "heal_amount": 2
+    },
+    "ability_text": "登场：我方英雄回复2"
+  },
+  "WitchApprentice": {
+    "name": "林间小巫",
+    "faction": "影契",
+    "type": "Monster",
+    "cost": 2,
+    "attack": 2,
+    "health": 2,
+    "keywords": [],
+    "evolve_next_id": "ForestWitch",
+    "evolve_cost": 2,
+    "ability_script": null,
+    "ability_text": "回合开始：可进化（进化2）"
+  },
+  "ForestWitch": {
+    "name": "林中女巫",
+    "faction": "影契",
+    "type": "Monster",
+    "cost": 4,
+    "attack": 3,
+    "health": 5,
+    "keywords": [
+      "OnDraw"
+    ],
+    "ability_script": "res://Scripts/Abilities/OnDrawSelfBuff.gd",
+    "ability_params": {
+      "buff_attack": 1,
+      "buff_health": 1
+    },
+    "ability_text": "抽到时：自身+1/+1"
+  },
+  "FireflySprite": {
+    "name": "萤火精",
+    "faction": "星辉",
+    "type": "Monster",
+    "cost": 1,
+    "attack": 1,
+    "health": 2,
+    "keywords": [],
+    "evolve_next_id": "StarSprite",
+    "evolve_cost": 1,
+    "ability_script": null,
+    "ability_text": "回合开始：可进化（进化1）"
+  },
+  "StarSprite": {
+    "name": "星辉精",
+    "faction": "星辉",
+    "type": "Monster",
+    "cost": 2,
+    "attack": 2,
+    "health": 3,
+    "keywords": [],
+    "ability_script": "res://Scripts/Abilities/DrawCard.gd",
+    "ability_params": {
+      "draw_count": 1
+    },
+    "ability_text": "登场：抽1张牌"
+  },
+  "FawnGuardian": {
+    "name": "角鹿幼崽",
+    "faction": "森灵",
+    "type": "Monster",
+    "cost": 1,
+    "attack": 1,
+    "health": 3,
+    "keywords": [
+      "Taunt"
+    ],
+    "evolve_next_id": "Moonstag",
+    "evolve_cost": 2,
+    "ability_script": null,
+    "ability_text": "回合开始：可进化（进化2）"
+  },
+  "Moonstag": {
+    "name": "月角鹿",
+    "faction": "森灵",
+    "type": "Monster",
+    "cost": 3,
+    "attack": 3,
+    "health": 6,
+    "keywords": [
+      "Taunt"
+    ],
+    "ability_script": null,
+    "ability_text": "嘲讽"
+  },
+  "SaplingGuard": {
+    "name": "树苗守卫",
+    "faction": "森灵",
+    "type": "Monster",
+    "cost": 2,
+    "attack": 1,
+    "health": 4,
+    "keywords": [
+      "Taunt"
+    ],
+    "evolve_next_id": "AncientTreeguard",
+    "evolve_cost": 3,
+    "ability_script": null,
+    "ability_text": "回合开始：可进化（进化3）"
+  },
+  "AncientTreeguard": {
+    "name": "古树守卫",
+    "faction": "森灵",
+    "type": "Monster",
+    "cost": 4,
+    "attack": 3,
+    "health": 7,
+    "keywords": [
+      "Taunt"
+    ],
+    "ability_script": null,
+    "ability_text": "嘲讽"
+  },
+  "ShadowFox": {
+    "name": "影狐",
+    "faction": "影契",
+    "type": "Monster",
+    "cost": 2,
+    "attack": 2,
+    "health": 1,
+    "keywords": [
+      "Charge"
+    ],
+    "evolve_next_id": "ShadowFoxKing",
+    "evolve_cost": 2,
+    "ability_script": null,
+    "ability_text": "回合开始：可进化（进化2）"
+  },
+  "ShadowFoxKing": {
+    "name": "影狐王",
+    "faction": "影契",
+    "type": "Monster",
+    "cost": 4,
+    "attack": 4,
+    "health": 2,
+    "keywords": [
+      "Charge"
+    ],
+    "ability_script": null,
+    "ability_text": "冲锋"
+  },
+  "MushroomImp": {
+    "name": "蘑菇小妖",
+    "faction": "影契",
+    "type": "Monster",
+    "cost": 1,
+    "attack": 1,
+    "health": 1,
+    "keywords": [
+      "Deathrattle"
+    ],
+    "ability_script": "res://Scripts/Abilities/DirectDamageHero.gd",
+    "ability_params": {
+      "damage_amount": 1,
+      "trigger_event": "on_death"
+    },
+    "ability_text": "亡语：对敌方英雄造成1点伤害"
+  },
+  "DewFairy": {
+    "name": "露珠精灵",
+    "faction": "星辉",
+    "type": "Monster",
+    "cost": 1,
+    "attack": 0,
+    "health": 3,
+    "keywords": [
+      "OnDraw"
+    ],
+    "ability_script": "res://Scripts/Abilities/OnDrawSelfBuff.gd",
+    "ability_params": {
+      "buff_attack": 1,
+      "buff_health": 0
+    },
+    "ability_text": "抽到时：自身+1攻"
+  },
+  "BluebellHerald": {
+    "name": "蓝铃花使",
+    "faction": "星辉",
+    "type": "Monster",
+    "cost": 2,
+    "attack": 2,
+    "health": 3,
+    "keywords": [],
+    "ability_script": "res://Scripts/Abilities/HealHero.gd",
+    "ability_params": {
+      "heal_amount": 2
+    },
+    "ability_text": "登场：我方英雄回复2"
+  },
+  "BarkSoldier": {
+    "name": "树皮小兵",
+    "faction": "森灵",
+    "type": "Monster",
+    "cost": 2,
+    "attack": 2,
+    "health": 2,
+    "keywords": [
+      "Taunt"
+    ],
+    "ability_script": null,
+    "ability_text": "嘲讽"
+  },
+  "WindChimeFox": {
+    "name": "风铃狐",
+    "faction": "影契",
+    "type": "Monster",
+    "cost": 3,
+    "attack": 3,
+    "health": 2,
+    "keywords": [
+      "Charge"
+    ],
+    "ability_script": null,
+    "ability_text": "冲锋"
+  },
+  "VineBinder": {
+    "name": "藤蔓缠绕者",
+    "faction": "森灵",
+    "type": "Monster",
+    "cost": 3,
+    "attack": 3,
+    "health": 4,
+    "keywords": [
+      "Taunt"
+    ],
+    "ability_script": null,
+    "ability_text": "嘲讽"
+  },
+  "ForestBear": {
+    "name": "森林熊",
+    "faction": "森灵",
+    "type": "Monster",
+    "cost": 4,
+    "attack": 4,
+    "health": 5,
+    "keywords": [],
+    "ability_script": null,
+    "ability_text": ""
+  },
+  "MoonlightDeer": {
+    "name": "月光鹿群",
+    "faction": "星辉",
+    "type": "Monster",
+    "cost": 4,
+    "attack": 4,
+    "health": 4,
+    "keywords": [
+      "Deathrattle"
+    ],
+    "ability_script": "res://Scripts/Abilities/DrawCard.gd",
+    "ability_params": {
+      "draw_count": 1,
+      "trigger_event": "on_death"
+    },
+    "ability_text": "亡语：抽1张牌"
+  },
+  "StardustStag": {
+    "name": "星尘鹿",
+    "faction": "星辉",
+    "type": "Monster",
+    "cost": 5,
+    "attack": 5,
+    "health": 5,
+    "keywords": [],
+    "ability_script": "res://Scripts/Abilities/BuffFriendly.gd",
+    "ability_params": {
+      "buff_attack": 1,
+      "buff_health": 1,
+      "buff_mode": "all"
+    },
+    "ability_text": "登场：友方全体+1/+1"
+  },
+  "MistGiantTree": {
+    "name": "迷雾巨树",
+    "faction": "森灵",
+    "type": "Monster",
+    "cost": 6,
+    "attack": 5,
+    "health": 7,
+    "keywords": [
+      "Taunt"
+    ],
+    "ability_script": null,
+    "ability_text": "嘲讽"
+  },
+  "ForestBlessing": {
+    "name": "森林祝福",
+    "faction": "森灵",
+    "type": "Magic",
+    "cost": 1,
+    "attack": null,
+    "health": null,
+    "keywords": [],
+    "ability_script": "res://Scripts/Abilities/BuffFriendly.gd",
+    "ability_params": {
+      "buff_attack": 1,
+      "buff_health": 1,
+      "buff_mode": "all"
+    },
+    "ability_text": "友方全体+1/+1"
+  },
+  "SweetJam": {
+    "name": "甜蜜果酱",
+    "faction": "森灵",
+    "type": "Magic",
+    "cost": 1,
+    "attack": null,
+    "health": null,
+    "keywords": [],
+    "ability_script": "res://Scripts/Abilities/HealHero.gd",
+    "ability_params": {
+      "heal_amount": 2
+    },
+    "ability_text": "我方英雄回复2"
+  },
+  "FireflyGuidance": {
+    "name": "萤火指引",
+    "faction": "星辉",
+    "type": "Magic",
+    "cost": 2,
+    "attack": null,
+    "health": null,
+    "keywords": [],
+    "ability_script": "res://Scripts/Abilities/DrawCard.gd",
+    "ability_params": {
+      "draw_count": 1
+    },
+    "ability_text": "抽1张牌"
+  },
+  "SporeCloud": {
+    "name": "蘑菇孢云",
+    "faction": "影契",
+    "type": "Magic",
+    "cost": 2,
+    "attack": null,
+    "health": null,
+    "keywords": [],
+    "ability_script": "res://Scripts/Abilities/DamageAllEnemies.gd",
+    "ability_params": {
+      "damage_amount": 1
+    },
+    "ability_text": "对敌方全体随从造成1点伤害"
+  },
+  "SparkleBeam": {
+    "name": "星辉光束",
+    "faction": "星辉",
+    "type": "Magic",
+    "cost": 3,
+    "attack": null,
+    "health": null,
+    "keywords": [],
+    "ability_script": "res://Scripts/Abilities/DirectDamageHero.gd",
+    "ability_params": {
+      "damage_amount": 3
+    },
+    "ability_text": "对敌方英雄造成3点伤害"
+  },
+  "CozyNap": {
+    "name": "安眠小憩",
+    "faction": "森灵",
+    "type": "Magic",
+    "cost": 3,
+    "attack": null,
+    "health": null,
+    "keywords": [],
+    "ability_script": "res://Scripts/Abilities/BuffFriendly.gd",
+    "ability_params": {
+      "buff_attack": 0,
+      "buff_health": 1,
+      "buff_mode": "all"
+    },
+    "ability_text": "友方全体+0/+1"
+  },
+  "MoonlightHeal": {
+    "name": "月光疗愈",
+    "faction": "星辉",
+    "type": "Magic",
+    "cost": 3,
+    "attack": null,
+    "health": null,
+    "keywords": [],
+    "ability_script": "res://Scripts/Abilities/HealHero.gd",
+    "ability_params": {
+      "heal_amount": 4
+    },
+    "ability_text": "我方英雄回复4"
+  },
+  "ForestGift": {
+    "name": "林间馈赠",
+    "faction": "星辉",
+    "type": "Magic",
+    "cost": 2,
+    "attack": null,
+    "health": null,
+    "keywords": [],
+    "ability_script": "res://Scripts/Abilities/DrawCard.gd",
+    "ability_params": {
+      "draw_count": 2
+    },
+    "ability_text": "抽2张牌"
+  }
+}

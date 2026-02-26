@@ -1,0 +1,187 @@
+[gd_scene format=3 uid="uid://c1s4trmvb73dj"]
+
+[ext_resource type="Script" uid="uid://dxximsg7ojsk" path="res://Scripts/Card.gd" id="1_b82vc"]
+[ext_resource type="Texture2D" uid="uid://bmnxp27bbtewg" path="res://Assets/cardback.png" id="2_3p273"]
+[ext_resource type="Texture2D" uid="uid://dyfx12l30snxv" path="res://Assets/CardTheme/moon_plus.png" id="3_3m7nw"]
+[ext_resource type="Texture2D" uid="uid://cbq1ly2mnmx2n" path="res://Assets/Portraits/BluebellHerald.png" id="4_kphy1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rgkbb"]
+size = Vector2(116.25007, 186.87518)
+
+[sub_resource type="Animation" id="Animation_55qgk"]
+length = 0.001
+
+[sub_resource type="Animation" id="Animation_25d3h"]
+resource_name = "card_flip"
+length = 0.6
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CardBack:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.29, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(0.03, 1), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CardBack:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.01, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CardFront:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CardFront:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(0.1, 1), Vector2(1, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("CardFront:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("CardBack:modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_fd18t"]
+_data = {
+&"RESET": SubResource("Animation_55qgk"),
+&"card_flip": SubResource("Animation_25d3h")
+}
+
+[node name="Card2" type="Node2D" unique_id=421870432]
+position = Vector2(170, 1150)
+script = ExtResource("1_b82vc")
+auto_scale_frames = true
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1460389980]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=867215333]
+scale = Vector2(1.4, 1.4)
+shape = SubResource("RectangleShape2D_rgkbb")
+
+[node name="CardFront" type="Node2D" parent="." unique_id=1257881340]
+z_index = 1
+scale = Vector2(0.99999994, 0.99999994)
+
+[node name="CardCharacterImage" type="Sprite2D" parent="CardFront" unique_id=1535527711]
+z_index = 1
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("4_kphy1")
+
+[node name="CardImage" type="Sprite2D" parent="CardFront" unique_id=642417973]
+z_index = 1
+scale = Vector2(0.105, 0.105)
+texture = ExtResource("3_3m7nw")
+
+[node name="CardBack" type="Node2D" parent="." unique_id=1837994406]
+
+[node name="CardBackImage" type="Sprite2D" parent="CardBack" unique_id=14995409]
+scale = Vector2(0.27, 0.27)
+texture = ExtResource("2_3p273")
+
+[node name="CostAnchor" type="Marker2D" parent="." unique_id=24546068]
+position = Vector2(-56, -107)
+
+[node name="AttackAnchor" type="Marker2D" parent="." unique_id=144320929]
+position = Vector2(-55, 70)
+
+[node name="HealthAnchor" type="Marker2D" parent="." unique_id=233306144]
+position = Vector2(55, 70)
+
+[node name="CostLabel" type="Label" parent="." unique_id=969752286]
+z_index = 2
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -59.0
+offset_top = -116.0
+offset_right = -19.0
+offset_bottom = -76.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "0"
+
+[node name="Attack" type="Label" parent="." unique_id=1053605500]
+z_index = 2
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -53.0
+offset_top = 97.0
+offset_right = -13.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "0"
+
+[node name="Health" type="Label" parent="." unique_id=819011342]
+z_index = 2
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 57.0
+offset_top = 106.0
+offset_right = 97.0
+offset_bottom = 129.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "0"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=401977206]
+libraries/ = SubResource("AnimationLibrary_fd18t")
+autoplay = &"card_flip"
+
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]

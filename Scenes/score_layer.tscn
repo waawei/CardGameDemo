@@ -1,0 +1,222 @@
+[gd_scene format=3 uid="uid://c3b4uybe3qfuf"]
+
+[ext_resource type="Texture2D" uid="uid://mai6urp2cege" path="res://Assets/CardFaces/Opponentpng.png" id="1_00vwp"]
+[ext_resource type="Texture2D" uid="uid://dhvbpbbbr1w74" path="res://Assets/CardFaces/Dashboard.png" id="2_7mj42"]
+[ext_resource type="Texture2D" uid="uid://dmw4mi2yq316g" path="res://Assets/CardFaces/Player.png" id="3_vdvd8"]
+[ext_resource type="Texture2D" uid="uid://e1exddk5u4be" path="res://Assets/CardFaces/decoration.png" id="4_decoration"]
+[ext_resource type="FontFile" uid="uid://j7jp8qw8i3h8" path="res://Assets/Fonts/ZCOOLXiaoWei-Regular.ttf" id="5_title"]
+[ext_resource type="Texture2D" uid="uid://spj0a1afslvn" path="res://Assets/CardFaces/Heart.png" id="6_heart"]
+[ext_resource type="Texture2D" uid="uid://dsy5eiu4oc800" path="res://Assets/CardFaces/Glowing Orb.png" id="8_orb"]
+[ext_resource type="FontFile" uid="uid://dpd1l8xsjfem8" path="res://Assets/Fonts/SourceHanSansCN-Regular.otf" id="9_sans"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_score_panel_clear"]
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_score_section_clear"]
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="LabelSettings" id="LabelSettings_score_value"]
+font = ExtResource("9_sans")
+font_size = 18
+outline_size = 3
+outline_color = Color(0, 0, 0, 1)
+shadow_color = Color(0, 0, 0, 0.6)
+
+[node name="ScoreLayer" type="CanvasLayer" unique_id=353751681]
+layer = 4
+offset = Vector2(0, 300)
+transform = Transform2D(1, 0, 0, 1, 0, 300)
+
+[node name="ScorePanel" type="Panel" parent="." unique_id=907802802]
+offset_left = 20.0
+offset_top = 40.0
+offset_right = 320.0
+offset_bottom = 360.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_score_panel_clear")
+
+[node name="ScorePanelFrame" type="Sprite2D" parent="ScorePanel" unique_id=711052575]
+modulate = Color(1, 1, 1, 0.85)
+z_index = -1
+position = Vector2(0, -19)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_7mj42")
+centered = false
+
+[node name="ScoreTextShade" type="ColorRect" parent="ScorePanel" unique_id=1083020221]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 82.0
+offset_top = 121.0
+offset_right = 115.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.35)
+
+[node name="ScoreVBox" type="VBoxContainer" parent="ScorePanel" unique_id=2107887554]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 60.0
+offset_top = 120.0
+offset_right = 60.0
+offset_bottom = 27.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+
+[node name="OpponentPanel" type="Panel" parent="ScorePanel/ScoreVBox" unique_id=1098025924]
+custom_minimum_size = Vector2(2, 85)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_score_section_clear")
+
+[node name="OpponentAvatarFrame" type="Sprite2D" parent="ScorePanel/ScoreVBox/OpponentPanel" unique_id=2902995]
+z_index = 1
+position = Vector2(30, 4)
+scale = Vector2(0.15625, 0.15625)
+texture = ExtResource("4_decoration")
+centered = false
+
+[node name="OpponentAvatar" type="Sprite2D" parent="ScorePanel/ScoreVBox/OpponentPanel" unique_id=378793808]
+position = Vector2(38, 8)
+scale = Vector2(0.125, 0.125)
+texture = ExtResource("1_00vwp")
+centered = false
+
+[node name="OpponentVBox" type="VBoxContainer" parent="ScorePanel/ScoreVBox/OpponentPanel" unique_id=647768336]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 120.0
+offset_top = 10.0
+offset_right = -56.0
+offset_bottom = 15.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 6
+
+[node name="OpponentTitle" type="Label" parent="ScorePanel/ScoreVBox/OpponentPanel/OpponentVBox" unique_id=1240327335]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_title")
+text = "Opponent"
+
+[node name="OpponentHealthRow" type="HBoxContainer" parent="ScorePanel/ScoreVBox/OpponentPanel/OpponentVBox" unique_id=670183698]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="OpponentHealthIcon" type="TextureRect" parent="ScorePanel/ScoreVBox/OpponentPanel/OpponentVBox/OpponentHealthRow" unique_id=1964784155]
+custom_minimum_size = Vector2(18, 18)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("6_heart")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="OpponentHealthValue" type="Label" parent="ScorePanel/ScoreVBox/OpponentPanel/OpponentVBox/OpponentHealthRow" unique_id=1004665224]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.45, 0.45, 1)
+text = "0"
+label_settings = SubResource("LabelSettings_score_value")
+
+[node name="OpponentEnergyRow" type="HBoxContainer" parent="ScorePanel/ScoreVBox/OpponentPanel/OpponentVBox" unique_id=1236839803]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="OpponentEnergyIcon" type="TextureRect" parent="ScorePanel/ScoreVBox/OpponentPanel/OpponentVBox/OpponentEnergyRow" unique_id=1485335057]
+custom_minimum_size = Vector2(18, 18)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("8_orb")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="OpponentEnergyValue" type="Label" parent="ScorePanel/ScoreVBox/OpponentPanel/OpponentVBox/OpponentEnergyRow" unique_id=118094276]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.88, 1, 1)
+text = "0/0"
+label_settings = SubResource("LabelSettings_score_value")
+
+[node name="OpponentEnergyCrystals" type="HBoxContainer" parent="ScorePanel/ScoreVBox/OpponentPanel/OpponentVBox" unique_id=2115327703]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="PlayerPanel" type="Panel" parent="ScorePanel/ScoreVBox" unique_id=940975613]
+custom_minimum_size = Vector2(0, 130)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_score_section_clear")
+
+[node name="PlayerAvatarFrame" type="Sprite2D" parent="ScorePanel/ScoreVBox/PlayerPanel" unique_id=2043066344]
+z_index = 1
+position = Vector2(30, 4)
+scale = Vector2(0.15625, 0.15625)
+texture = ExtResource("4_decoration")
+centered = false
+
+[node name="PlayerAvatar" type="Sprite2D" parent="ScorePanel/ScoreVBox/PlayerPanel" unique_id=2037825232]
+position = Vector2(38, 8)
+scale = Vector2(0.125, 0.125)
+texture = ExtResource("3_vdvd8")
+centered = false
+
+[node name="PlayerVBox" type="VBoxContainer" parent="ScorePanel/ScoreVBox/PlayerPanel" unique_id=1635195532]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 120.0
+offset_top = 10.0
+offset_right = -56.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 6
+
+[node name="PlayerTitle" type="Label" parent="ScorePanel/ScoreVBox/PlayerPanel/PlayerVBox" unique_id=937960687]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_title")
+text = "Player"
+
+[node name="PlayerHealthRow" type="HBoxContainer" parent="ScorePanel/ScoreVBox/PlayerPanel/PlayerVBox" unique_id=1328583172]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="PlayerHealthIcon" type="TextureRect" parent="ScorePanel/ScoreVBox/PlayerPanel/PlayerVBox/PlayerHealthRow" unique_id=1860520225]
+custom_minimum_size = Vector2(18, 18)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("6_heart")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="PlayerHealthValue" type="Label" parent="ScorePanel/ScoreVBox/PlayerPanel/PlayerVBox/PlayerHealthRow" unique_id=54042526]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.45, 0.45, 1)
+text = "0"
+label_settings = SubResource("LabelSettings_score_value")
+
+[node name="PlayerEnergyRow" type="HBoxContainer" parent="ScorePanel/ScoreVBox/PlayerPanel/PlayerVBox" unique_id=2143650177]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="PlayerEnergyIcon" type="TextureRect" parent="ScorePanel/ScoreVBox/PlayerPanel/PlayerVBox/PlayerEnergyRow" unique_id=1959078946]
+custom_minimum_size = Vector2(18, 18)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("8_orb")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="PlayerEnergyValue" type="Label" parent="ScorePanel/ScoreVBox/PlayerPanel/PlayerVBox/PlayerEnergyRow" unique_id=755432420]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.88, 1, 1)
+text = "0/0"
+label_settings = SubResource("LabelSettings_score_value")
+
+[node name="PlayerEnergyCrystals" type="HBoxContainer" parent="ScorePanel/ScoreVBox/PlayerPanel/PlayerVBox" unique_id=659558440]
+layout_mode = 2
+theme_override_constants/separation = 4

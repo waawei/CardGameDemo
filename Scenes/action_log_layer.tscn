@@ -1,0 +1,78 @@
+[gd_scene format=3 uid="uid://c2s4xf0tsb8s8"]
+
+[ext_resource type="Texture2D" uid="uid://dhvbpbbbr1w74" path="res://Assets/CardFaces/Dashboard.png" id="1_xq125"]
+[ext_resource type="Script" uid="uid://ca2r8232l6v8s" path="res://Scripts/ActionLog.gd" id="2_688uw"]
+[ext_resource type="FontFile" uid="uid://djl3ayx8ay7nx" path="res://Assets/Fonts/SourceHanSerifCN-Regular.otf" id="3_serif"]
+[ext_resource type="FontFile" uid="uid://j7jp8qw8i3h8" path="res://Assets/Fonts/ZCOOLXiaoWei-Regular.ttf" id="4_title"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_score_panel_clear"]
+bg_color = Color(0, 0, 0, 0)
+
+[node name="ActionLogLayer" type="CanvasLayer" unique_id=860139998]
+layer = 4
+scale = Vector2(1.4, 1.4)
+transform = Transform2D(1.4, 0, 0, 1.4, 0, 0)
+
+[node name="ActionLogPanel" type="Panel" parent="." unique_id=1419589714]
+offset_left = 1060.0
+offset_top = 610.0
+offset_right = 1360.0
+offset_bottom = 810.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_score_panel_clear")
+
+[node name="ActionLogBg" type="TextureRect" parent="ActionLogPanel" unique_id=1654968846]
+z_index = -1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("1_xq125")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="ActionLogTitle" type="Label" parent="ActionLogPanel" unique_id=23648785]
+layout_mode = 0
+offset_left = 115.0
+offset_top = 27.0
+offset_right = 195.0
+offset_bottom = 47.0
+theme_override_fonts/font = ExtResource("4_title")
+text = "Action Log"
+
+[node name="ActionLogTextShade" type="ColorRect" parent="ActionLogPanel" unique_id=1422190611]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 59.285694
+offset_top = 53.57142
+offset_right = -50.71431
+offset_bottom = -46.42859
+mouse_filter = 2
+color = Color(0, 0, 0, 0.25)
+
+[node name="ActionLogScroll" type="ScrollContainer" parent="ActionLogPanel" unique_id=1710142614]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 57.85721
+offset_top = 46.428604
+offset_right = -52.14279
+offset_bottom = -33.57141
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ActionLog" type="RichTextLabel" parent="ActionLogPanel/ActionLogScroll" unique_id=1744919797]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+bbcode_enabled = true
+fit_content = true
+theme_override_constants/line_separation = 6
+script = ExtResource("2_688uw")
+log_font = ExtResource("3_serif")

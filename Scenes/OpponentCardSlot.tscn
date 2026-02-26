@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://cr63m6ttt2h58"]
+
+[ext_resource type="Script" uid="uid://btimn2ynfex6j" path="res://Scripts/MonsterCardSlot.gd" id="1_ecbbl"]
+[ext_resource type="Texture2D" uid="uid://clp3ioeian1ve" path="res://Assets/CardFaces/CardSlot.png" id="2_m7x22"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_card_slot_add"]
+blend_mode = 1
+
+[node name="CardSlot" type="Node2D" unique_id=376282129]
+scale = Vector2(0.6, 0.6)
+script = ExtResource("1_ecbbl")
+
+[node name="CardSlotImage" type="Sprite2D" parent="." unique_id=1372146852]
+position = Vector2(0, 50)
+scale = Vector2(0.4, 0.4)
+modulate = Color(1, 1, 1, 0.78)
+material = SubResource("CanvasItemMaterial_card_slot_add")
+texture = ExtResource("2_m7x22")

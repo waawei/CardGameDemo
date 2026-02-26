@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://bd714ok5vflli"]
+
+[ext_resource type="Script" uid="uid://c6y8o1if00aik" path="res://Scripts/Deck.gd" id="1_3662i"]
+[ext_resource type="Texture2D" uid="uid://d11xbrjigxv8d" path="res://Assets/Deck.png" id="2_io7pv"]
+
+[node name="Deck" type="Node2D" unique_id=1585452879]
+position = Vector2(170, 1150)
+scale = Vector2(0.7, 0.7)
+script = ExtResource("1_3662i")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1824752983]
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D" unique_id=2110424494]
+polygon = PackedVector2Array(-99, -144, -54, -164, 31, -156, 83, -153, 128, -128, 147, -95, 154, -64, 125, 60, 113, 139, 90, 160, 33, 165, -30, 144, -111, 134, -131, 104, -133, 80, -98, -36)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=124010754]
+scale = Vector2(0.38, 0.38)
+texture = ExtResource("2_io7pv")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=21915984]
+z_index = -2
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(2, 2)
+text = "000
+"

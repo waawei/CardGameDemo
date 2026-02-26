@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://d1lnuwl33g5g5"]
+
+[ext_resource type="Script" uid="uid://btimn2ynfex6j" path="res://Scripts/MonsterCardSlot.gd" id="1_3l11u"]
+[ext_resource type="Texture2D" uid="uid://clp3ioeian1ve" path="res://Assets/CardFaces/CardSlot.png" id="2_r3qn0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_427uy"]
+size = Vector2(198.182, 324.545)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_card_slot_add"]
+blend_mode = 1
+
+[node name="CardSlot" type="Node2D" unique_id=1088251881]
+scale = Vector2(0.6, 0.6)
+script = ExtResource("1_3l11u")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1712239488]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=476236035]
+position = Vector2(4.76837e-06, 0.499998)
+scale = Vector2(1.1, 1.1)
+shape = SubResource("RectangleShape2D_427uy")
+
+[node name="CardSlotImage" type="Sprite2D" parent="." unique_id=32310476]
+position = Vector2(0, 50)
+scale = Vector2(0.4, 0.4)
+modulate = Color(1, 1, 1, 0.78)
+material = SubResource("CanvasItemMaterial_card_slot_add")
+texture = ExtResource("2_r3qn0")

@@ -1,0 +1,730 @@
+[gd_scene format=3 uid="uid://pc2icntrmgjc"]
+
+[ext_resource type="Script" uid="uid://b56aaxdenkvll" path="res://Scripts/CardManager.gd" id="1_qrbj7"]
+[ext_resource type="PackedScene" uid="uid://d1lnuwl33g5g5" path="res://Scenes/CardSlot.tscn" id="2_mwmi1"]
+[ext_resource type="Script" uid="uid://c472kfw1bmjp7" path="res://Scripts/PlayerHand.gd" id="3_y7dvb"]
+[ext_resource type="PackedScene" uid="uid://cr63m6ttt2h58" path="res://Scenes/OpponentCardSlot.tscn" id="4_m5i75"]
+[ext_resource type="Script" uid="uid://dg4opm3o7a8lf" path="res://Scripts/InputManager.gd" id="6_adv1p"]
+[ext_resource type="Script" uid="uid://bkfo5nkphuxct" path="res://Scripts/OpponentHand.gd" id="6_q00h8"]
+[ext_resource type="PackedScene" uid="uid://bd714ok5vflli" path="res://Scenes/deck.tscn" id="7_8p66n"]
+[ext_resource type="Texture2D" uid="uid://d11xbrjigxv8d" path="res://Assets/Deck.png" id="10_6iyac"]
+[ext_resource type="Script" uid="uid://cqbmac6drc0rl" path="res://Scripts/OpponentDeck.gd" id="10_7qyg8"]
+[ext_resource type="Script" uid="uid://cly028p8rgsmg" path="res://Scenes/BattleManager.gd" id="11_rb2t5"]
+[ext_resource type="Script" uid="uid://bt8kvpe7wyfb3" path="res://Scripts/AbilityBus.gd" id="13_ability"]
+[ext_resource type="Texture2D" uid="uid://ryvhmbei8r2b" path="res://Assets/CardFaces/Background.png" id="16_bg"]
+[ext_resource type="FontFile" uid="uid://djl3ayx8ay7nx" path="res://Assets/Fonts/SourceHanSerifCN-Regular.otf" id="17_serif"]
+[ext_resource type="Texture2D" uid="uid://cv6vsndgdbh78" path="res://Assets/CardFaces/Sapphire Crystal.png" id="18_crystal"]
+[ext_resource type="Texture2D" uid="uid://spj0a1afslvn" path="res://Assets/CardFaces/Heart.png" id="18_heart"]
+[ext_resource type="Texture2D" uid="uid://dsy5eiu4oc800" path="res://Assets/CardFaces/Glowing Orb.png" id="18_orb"]
+[ext_resource type="FontFile" uid="uid://j7jp8qw8i3h8" path="res://Assets/Fonts/ZCOOLXiaoWei-Regular.ttf" id="18_title"]
+[ext_resource type="PackedScene" uid="uid://c3b4uybe3qfuf" path="res://Scenes/score_layer.tscn" id="19_fevyy"]
+[ext_resource type="PackedScene" uid="uid://cvbwf8271cha0" path="res://Scenes/turn_phase_layer.tscn" id="19_hibaj"]
+[ext_resource type="Texture2D" uid="uid://dvn6n1t5tyrul" path="res://Assets/CardFaces/menu.png" id="20_menu"]
+[ext_resource type="PackedScene" uid="uid://c2s4xf0tsb8s8" path="res://Scenes/action_log_layer.tscn" id="21_pdsj5"]
+[ext_resource type="Texture2D" uid="uid://bcsg5iy7o3mtk" path="res://Assets/CardFaces/EndTurn/MyTurnReady.png" id="23_myturn"]
+[ext_resource type="Texture2D" uid="uid://dtaks8riinj6g" path="res://Assets/CardFaces/EndTurn/TurnEnding.png" id="24_turnending"]
+[ext_resource type="Texture2D" uid="uid://c2wtqvjraeay8" path="res://Assets/CardFaces/EndTurn/EnemyTurn.png" id="25_enemyturn"]
+[ext_resource type="Script" uid="uid://dlyqbhtd5745o" path="res://Scripts/EndTurnButton.gd" id="26_endturn_script"]
+
+[sub_resource type="Shader" id="Shader_background_blur"]
+code = "shader_type canvas_item;
+
+uniform float blur_size = 1.6;
+uniform float intensity = 0.65;
+
+void fragment() {
+	vec2 texel = blur_size / vec2(textureSize(TEXTURE, 0));
+	vec4 c = texture(TEXTURE, UV) * 0.36;
+	c += texture(TEXTURE, UV + vec2(texel.x, 0.0)) * 0.16;
+	c += texture(TEXTURE, UV - vec2(texel.x, 0.0)) * 0.16;
+	c += texture(TEXTURE, UV + vec2(0.0, texel.y)) * 0.16;
+	c += texture(TEXTURE, UV - vec2(0.0, texel.y)) * 0.16;
+	COLOR = mix(texture(TEXTURE, UV), c, intensity);
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_background_blur"]
+shader = SubResource("Shader_background_blur")
+shader_parameter/blur_size = 1.6
+shader_parameter/intensity = 0.65
+
+[sub_resource type="Shader" id="Shader_vignette_dim"]
+code = "shader_type canvas_item;
+
+uniform vec4 tint : source_color = vec4(0.05, 0.08, 0.12, 0.32);
+uniform float inner = 0.25;
+uniform float outer = 0.95;
+uniform float edge_boost = 0.55;
+
+void fragment() {
+	vec2 uv = UV * 2.0 - 1.0;
+	float d = length(uv);
+	float v = smoothstep(inner, outer, d);
+	float a = tint.a * mix(0.6, 1.0, v * edge_boost + (1.0 - edge_boost));
+	COLOR = vec4(tint.rgb, a);
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vignette_dim"]
+shader = SubResource("Shader_vignette_dim")
+shader_parameter/tint = Color(0.05, 0.08, 0.12, 0.32)
+shader_parameter/inner = 0.25
+shader_parameter/outer = 0.95
+shader_parameter/edge_boost = 0.55
+
+[sub_resource type="Animation" id="Animation_hibaj"]
+resource_name = "BackTransition"
+length = 2.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ReadySprite:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(1.8, 2.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ReadySprite:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1.8),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("EndingSprite:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.6, 1, 1.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("EndingSprite:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("EnemySprite:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("EnemySprite:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_pdsj5"]
+length = 0.001
+
+[sub_resource type="Animation" id="Animation_ee4r6"]
+resource_name = "Transition"
+length = 2.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ReadySprite:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ReadySprite:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("EndingSprite:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.6, 1, 1.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("EndingSprite:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("EnemySprite:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(1, 1.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("EnemySprite:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_turn_transition"]
+_data = {
+&"BackTransition": SubResource("Animation_hibaj"),
+&"RESET": SubResource("Animation_pdsj5"),
+&"Transition": SubResource("Animation_ee4r6")
+}
+
+[sub_resource type="LabelSettings" id="LabelSettings_h1bgf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tooltip"]
+bg_color = Color(0.05, 0.05, 0.05, 0.84)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.82, 0.7, 0.35, 0.65)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_size = 6
+shadow_offset = Vector2(0, 2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_score_panel"]
+bg_color = Color(0.06, 0.06, 0.06, 0.78)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.7, 0.6, 0.25, 0.85)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="Shader" id="Shader_grayscale"]
+code = "shader_type canvas_item;
+
+uniform sampler2D screen_texture : hint_screen_texture;
+uniform float amount = 1.0;
+
+void fragment() {
+	vec4 col = texture(screen_texture, SCREEN_UV);
+	float g = dot(col.rgb, vec3(0.299, 0.587, 0.114));
+	vec3 rgb = mix(col.rgb, vec3(g), amount);
+	COLOR = vec4(rgb, col.a);
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_grayscale"]
+shader = SubResource("Shader_grayscale")
+shader_parameter/amount = 1.0
+
+[node name="Main" type="Node2D" unique_id=463770987]
+
+[node name="Background" type="TextureRect" parent="." unique_id=2147213005]
+z_index = -2
+material = SubResource("ShaderMaterial_background_blur")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1920.0
+offset_bottom = 1303.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("16_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="BackgroundDim" type="ColorRect" parent="Background" unique_id=1932898708]
+material = SubResource("ShaderMaterial_vignette_dim")
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="CardManager" type="Node2D" parent="." unique_id=874844502]
+script = ExtResource("1_qrbj7")
+
+[node name="CradSlots" type="Node2D" parent="." unique_id=1690375759]
+z_index = -2
+
+[node name="CardSlot6" parent="CradSlots" unique_id=1949837859 instance=ExtResource("2_mwmi1")]
+position = Vector2(850, 850)
+
+[node name="CardSlot7" parent="CradSlots" unique_id=1197100757 instance=ExtResource("2_mwmi1")]
+visibility_layer = 3
+position = Vector2(620, 850)
+
+[node name="CardSlot9" parent="CradSlots" unique_id=860267096 instance=ExtResource("2_mwmi1")]
+position = Vector2(1080, 850)
+
+[node name="CardSlot12" parent="CradSlots" unique_id=1549945193 instance=ExtResource("4_m5i75")]
+position = Vector2(960, 280)
+
+[node name="CardSlot13" parent="CradSlots" unique_id=649991987 instance=ExtResource("4_m5i75")]
+position = Vector2(1180, 280)
+
+[node name="CardSlot14" parent="CradSlots" unique_id=1376586352 instance=ExtResource("4_m5i75")]
+position = Vector2(1400, 280)
+
+[node name="MagicSlotPlayer" parent="CradSlots" unique_id=2085517301 instance=ExtResource("2_mwmi1")]
+position = Vector2(1360, 850)
+card_slot_type = "Magic"
+
+[node name="MagicSlotOpponent" parent="CradSlots" unique_id=1856845229 instance=ExtResource("4_m5i75")]
+position = Vector2(620, 280)
+card_slot_type = "Magic"
+
+[node name="PlayerHand" type="Node2D" parent="." unique_id=1984686161]
+script = ExtResource("3_y7dvb")
+
+[node name="OpponentHand" type="Node2D" parent="." unique_id=128398124]
+script = ExtResource("6_q00h8")
+
+[node name="Deck" parent="." unique_id=86209940 instance=ExtResource("7_8p66n")]
+
+[node name="InputManager" type="Node2D" parent="." unique_id=1395341734]
+script = ExtResource("6_adv1p")
+
+[node name="AbilityBus" type="Node" parent="." unique_id=1812539191]
+script = ExtResource("13_ability")
+
+[node name="EndTurnButton" type="TextureButton" parent="." unique_id=1536203311]
+z_index = 1
+offset_left = 1337.0
+offset_top = 439.0
+offset_right = 1849.0
+offset_bottom = 951.0
+scale = Vector2(0.7, 0.7)
+script = ExtResource("26_endturn_script")
+
+[node name="EndingSprite" type="Sprite2D" parent="EndTurnButton" unique_id=828257211]
+visible = false
+modulate = Color(1, 1, 1, 0)
+z_index = 1
+position = Vector2(256, 256)
+texture = ExtResource("24_turnending")
+
+[node name="EnemySprite" type="Sprite2D" parent="EndTurnButton" unique_id=1572639578]
+visible = false
+modulate = Color(1, 1, 1, 0)
+z_index = 1
+position = Vector2(256, 256)
+texture = ExtResource("25_enemyturn")
+
+[node name="ReadyGlow" type="Sprite2D" parent="EndTurnButton" unique_id=373624833]
+visible = false
+modulate = Color(1, 1, 1, 0)
+z_index = 1
+position = Vector2(256, 256)
+texture = ExtResource("23_myturn")
+
+[node name="ReadySprite" type="Sprite2D" parent="EndTurnButton" unique_id=486443219]
+z_index = 1
+position = Vector2(256, 256)
+scale = Vector2(0.99999976, 0.99999976)
+texture = ExtResource("23_myturn")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="EndTurnButton" unique_id=512339838]
+libraries/ = SubResource("AnimationLibrary_turn_transition")
+
+[node name="EndTurnLabel" type="Label" parent="EndTurnButton" unique_id=1677189473]
+visible = false
+z_index = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 63.0
+offset_bottom = 17.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.95, 0.92, 0.8, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.7)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("18_title")
+text = "End Turn"
+label_settings = SubResource("LabelSettings_h1bgf")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MenuButton" type="TextureButton" parent="." unique_id=199379153]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 1602.0
+offset_top = 507.0
+offset_right = 1702.0
+offset_bottom = 607.0
+grow_horizontal = 0
+scale = Vector2(2, 2)
+texture_normal = ExtResource("20_menu")
+texture_pressed = ExtResource("20_menu")
+texture_hover = ExtResource("20_menu")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="OpponentDeck" type="Node2D" parent="." unique_id=266489034]
+script = ExtResource("10_7qyg8")
+
+[node name="Sprite2D" type="Sprite2D" parent="OpponentDeck" unique_id=1752950423]
+position = Vector2(1750, 150)
+scale = Vector2(0.266, 0.266)
+texture = ExtResource("10_6iyac")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="OpponentDeck" unique_id=166483536]
+z_index = -2
+offset_left = 1750.0
+offset_top = 150.0
+offset_right = 1790.0
+offset_bottom = 190.0
+scale = Vector2(2, 2)
+text = "000
+"
+
+[node name="BattleManager" type="Node" parent="." unique_id=1493373235]
+script = ExtResource("11_rb2t5")
+
+[node name="BattleTimer" type="Timer" parent="." unique_id=738856045]
+
+[node name="OpponentHealth" type="RichTextLabel" parent="." unique_id=1897250507]
+visible = false
+offset_left = 130.0
+offset_top = 430.0
+offset_right = 170.0
+offset_bottom = 470.0
+text = "0"
+
+[node name="OpponentEnergy" type="RichTextLabel" parent="." unique_id=804503823]
+visible = false
+offset_left = 130.0
+offset_top = 470.0
+offset_right = 210.0
+offset_bottom = 510.0
+text = "0/0"
+
+[node name="PlayerHealth" type="RichTextLabel" parent="." unique_id=988918762]
+visible = false
+offset_left = 130.0
+offset_top = 680.0
+offset_right = 170.0
+offset_bottom = 720.0
+text = "0"
+
+[node name="PlayerEnergy" type="RichTextLabel" parent="." unique_id=833067884]
+visible = false
+offset_left = 130.0
+offset_top = 720.0
+offset_right = 210.0
+offset_bottom = 760.0
+text = "0/0"
+
+[node name="TurnLabel" type="RichTextLabel" parent="." unique_id=1124454773]
+visible = false
+offset_left = 820.0
+offset_top = 100.0
+offset_right = 1100.0
+offset_bottom = 140.0
+text = "Your Turn"
+
+[node name="HandLimitLabel" type="RichTextLabel" parent="." unique_id=931823244]
+visible = false
+offset_left = 820.0
+offset_top = 1020.0
+offset_right = 1100.0
+offset_bottom = 1060.0
+text = "Hand Full"
+
+[node name="ActionLogLayer" parent="." unique_id=860139998 instance=ExtResource("21_pdsj5")]
+
+[node name="CardInfoLayer" type="CanvasLayer" parent="." unique_id=410992741]
+layer = 5
+
+[node name="CardInfoPanel" type="Panel" parent="CardInfoLayer" unique_id=-1073366920]
+visible = false
+offset_left = 1320.0
+offset_top = 580.0
+offset_right = 1620.0
+offset_bottom = 730.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_tooltip")
+
+[node name="CardInfoTitle" type="Label" parent="CardInfoLayer/CardInfoPanel" unique_id=1678393816]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 10.0
+offset_right = 544.0
+offset_bottom = 34.0
+theme_override_fonts/font = ExtResource("18_title")
+theme_override_font_sizes/font_size = 20
+text = "Card"
+
+[node name="CardInfoStats" type="HBoxContainer" parent="CardInfoLayer/CardInfoPanel" unique_id=1266509088]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 38.0
+offset_right = 544.0
+offset_bottom = 60.0
+theme_override_constants/separation = 16
+
+[node name="CardInfoCost" type="HBoxContainer" parent="CardInfoLayer/CardInfoPanel/CardInfoStats" unique_id=2051227685]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="CardInfoCostIcon" type="TextureRect" parent="CardInfoLayer/CardInfoPanel/CardInfoStats/CardInfoCost" unique_id=796519589]
+custom_minimum_size = Vector2(18, 18)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("18_orb")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CardInfoCostValue" type="Label" parent="CardInfoLayer/CardInfoPanel/CardInfoStats/CardInfoCost" unique_id=659601231]
+layout_mode = 2
+text = "0"
+
+[node name="CardInfoAttack" type="HBoxContainer" parent="CardInfoLayer/CardInfoPanel/CardInfoStats" unique_id=929460768]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="CardInfoAttackIcon" type="TextureRect" parent="CardInfoLayer/CardInfoPanel/CardInfoStats/CardInfoAttack" unique_id=776527539]
+custom_minimum_size = Vector2(18, 18)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("18_crystal")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CardInfoAttackValue" type="Label" parent="CardInfoLayer/CardInfoPanel/CardInfoStats/CardInfoAttack" unique_id=1600067216]
+layout_mode = 2
+text = "0"
+
+[node name="CardInfoHealth" type="HBoxContainer" parent="CardInfoLayer/CardInfoPanel/CardInfoStats" unique_id=1290035103]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="CardInfoHealthIcon" type="TextureRect" parent="CardInfoLayer/CardInfoPanel/CardInfoStats/CardInfoHealth" unique_id=169874521]
+custom_minimum_size = Vector2(18, 18)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("18_heart")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CardInfoHealthValue" type="Label" parent="CardInfoLayer/CardInfoPanel/CardInfoStats/CardInfoHealth" unique_id=1165825955]
+layout_mode = 2
+text = "0"
+
+[node name="CardInfoText" type="RichTextLabel" parent="CardInfoLayer/CardInfoPanel" unique_id=1612609650]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 74.0
+offset_right = 544.0
+offset_bottom = 434.0
+theme_override_constants/line_separation = 10
+theme_override_fonts/normal_font = ExtResource("17_serif")
+autowrap_mode = 2
+
+[node name="PlayerDeckCount" type="Label" parent="." unique_id=1331005207]
+offset_left = 130.0
+offset_top = 975.0
+offset_right = 210.0
+offset_bottom = 1015.0
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="OpponentDeckCount" type="Label" parent="." unique_id=2025551829]
+offset_left = 1710.0
+offset_top = 120.0
+offset_right = 1790.0
+offset_bottom = 160.0
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayerDiscardCount" type="Label" parent="." unique_id=1835525524]
+visible = false
+offset_left = 1585.0
+offset_top = 550.0
+offset_right = 1665.0
+offset_bottom = 590.0
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="OpponentDiscardCount" type="Label" parent="." unique_id=-540945759]
+visible = false
+offset_left = 275.0
+offset_top = 230.0
+offset_right = 355.0
+offset_bottom = 270.0
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayerDiscard" type="Node2D" parent="." unique_id=1725057067]
+visible = false
+position = Vector2(1624, 711)
+scale = Vector2(0.6, 0.6)
+
+[node name="Sprite2D" type="Sprite2D" parent="PlayerDiscard" unique_id=136938414]
+scale = Vector2(0.6, 0.6)
+
+[node name="OpponentDiscard" type="Node2D" parent="." unique_id=1152168973]
+visible = false
+position = Vector2(317, 371)
+scale = Vector2(0.6, 0.6)
+
+[node name="Sprite2D" type="Sprite2D" parent="OpponentDiscard" unique_id=590922367]
+scale = Vector2(0.5, 0.5)
+
+[node name="TurnPhaseLayer" parent="." unique_id=48913889 instance=ExtResource("19_hibaj")]
+
+[node name="MenuLayer" type="CanvasLayer" parent="." unique_id=1216870098]
+layer = 6
+
+[node name="MenuPanel" type="Panel" parent="MenuLayer" unique_id=958394898]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -160.0
+offset_right = 200.0
+offset_bottom = 160.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_score_panel")
+
+[node name="MenuVBox" type="VBoxContainer" parent="MenuLayer/MenuPanel" unique_id=126649624]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
+theme_override_constants/separation = 10
+
+[node name="MenuTitle" type="Label" parent="MenuLayer/MenuPanel/MenuVBox" unique_id=1261835872]
+layout_mode = 2
+text = "Menu"
+horizontal_alignment = 1
+
+[node name="MenuResumeButton" type="Button" parent="MenuLayer/MenuPanel/MenuVBox" unique_id=432921727]
+layout_mode = 2
+text = "Resume"
+
+[node name="MenuSurrenderButton" type="Button" parent="MenuLayer/MenuPanel/MenuVBox" unique_id=1342318383]
+layout_mode = 2
+text = "Surrender"
+
+[node name="MenuQuitButton" type="Button" parent="MenuLayer/MenuPanel/MenuVBox" unique_id=44880728]
+layout_mode = 2
+text = "Quit"
+
+[node name="EndGameOverlay" type="CanvasLayer" parent="." unique_id=1676849183]
+visible = false
+
+[node name="Overlay" type="ColorRect" parent="EndGameOverlay" unique_id=1434620894]
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0, 0, 0, 0.6)
+
+[node name="EndGameLabel" type="Label" parent="EndGameOverlay/Overlay" unique_id=2115193237]
+layout_mode = 0
+offset_left = 870.0
+offset_top = 460.0
+offset_right = 1050.0
+offset_bottom = 500.0
+text = "Victory"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RestartButton" type="Button" parent="EndGameOverlay/Overlay" unique_id=1732862883]
+layout_mode = 0
+offset_left = 900.0
+offset_top = 520.0
+offset_right = 1020.0
+offset_bottom = 560.0
+text = "Restart"
+
+[node name="ScoreLayer" parent="." unique_id=353751681 instance=ExtResource("19_fevyy")]
+
+[node name="GrayTestOverlay" type="ColorRect" parent="." unique_id=2023365181]
+visible = false
+z_index = 100
+material = SubResource("ShaderMaterial_grayscale")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[connection signal="pressed" from="EndTurnButton" to="BattleManager" method="_on_end_turn_button_pressed"]
+[connection signal="pressed" from="MenuButton" to="BattleManager" method="_on_menu_button_pressed"]
+[connection signal="pressed" from="MenuLayer/MenuPanel/MenuVBox/MenuResumeButton" to="BattleManager" method="_on_menu_resume_pressed"]
+[connection signal="pressed" from="MenuLayer/MenuPanel/MenuVBox/MenuSurrenderButton" to="BattleManager" method="_on_menu_surrender_pressed"]
+[connection signal="pressed" from="MenuLayer/MenuPanel/MenuVBox/MenuQuitButton" to="BattleManager" method="_on_menu_quit_pressed"]
+[connection signal="pressed" from="EndGameOverlay/Overlay/RestartButton" to="BattleManager" method="_on_restart_button_pressed"]
